@@ -214,26 +214,23 @@
 // }
 
 Function.prototype.myDebounce = function(interval) {
+  let timerStarted = false;
   let timerFinished = false;
 
-
   return (...args) => {
-    setTimeout(() => {
-      if (timerFinished) {
-        timerFinished = false;
-      } else {
-        timerFinished = true;
-      }
-      
-    }, interval)
 
-
+    
     if (timerFinished) {
-      this(...args);
+      setTimeout(() => {
+        if (timerFinished) {
+          this(...args);
+        }
+        timerFinished = true;
+      }, interval)
+    } else {
+      timerFinished = true;
     }
   }
-
-
 }
 
 
@@ -272,6 +269,6 @@ const queryForHelloWorld = () => {
   searchBar.type("d");
 };
 
-queryForHelloWorld();
 
-searchBar.search = searchBar.search.myDebounce(500);
+searchBar.search = searchBar.search.myDebounce(5);
+queryForHelloWorld();
