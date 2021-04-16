@@ -1,39 +1,43 @@
-Array.prototype.uniq = function() {
-  let new_arr = [];
-  for (i = 0; i < this.length; i++) {
-    if (!new_arr.includes(this[i])) {
-      new_arr.push(this[i]);
+class Clock {
+  constructor() {
+    // 1. Create a Date object.
+    let date = new Date();
+    // 2. Store the hours, minutes, and seconds.
+    this.hours = date.getHours();
+    this.minutes = date.getMinutes();
+    this.seconds = date.getSeconds();
+    // 3. Call printTime.
+    this.printTime();
+    // 4. Schedule the tick at 1 second intervals.
+    while(true) {
+      setTimeout( this._tick() , 1000 );
+
     }
+  }
+
+  printTime() {
+    // Format the time in HH:MM:SS
+    let time = `${this.hours}:${this.minutes}:${this.seconds}`;
+    // Use console.log to print it.
+    console.log(time);
   };
-  return new_arr;
+
+  _tick() {
+    // 1. Increment the time by one second.
+    // 2. Call printTime.
+    this.seconds += 1;
+    if (this.seconds === 60){
+      this.seconds = 0;
+      this.minutes += 1;
+      if (this.minutes === 60) {
+        this.minutes = 0;
+        this.hours += 1
+        if (this.hours === 24) {
+          this.hours = 1;
+        };
+      };
+    };
+
+    this.printTime();
+  };
 }
-
-Array.prototype.twoSum = function() {
-
-  for (i = 0; i < this.length - 1; i++) {
-    for (y = i + 1; i < this.length; y++) {
-      if (this[i] + this[y] == 0) {
-        return [i, y];
-      }
-    }
-  }
-  return null;
-}
-
-Array.prototype.transpose = function() {
-  let new_arr = []
-  // [[ 1 2 3] 
-  //  [ 4 5 6]]
-
-  // [[1 4] 
-  //  [2 5] 
-  //  [3 6]]  
-  for (i = 0; i < this[0].length; i++) {
-    new_arr[i] = []
-    for (y = 0; y < this.length; y++) {
-      new_arr[i].push(this[y][i])
-    }
-  }
-  return new_arr
-}
-
