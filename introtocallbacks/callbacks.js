@@ -9,11 +9,10 @@ class Clock {
     // 3. Call printTime.
     this.printTime();
     // 4. Schedule the tick at 1 second intervals.
-    while(true) {
-      setTimeout( this._tick() , 1000 );
-
-    }
+    this._tick();
   }
+
+
 
   printTime() {
     // Format the time in HH:MM:SS
@@ -25,19 +24,52 @@ class Clock {
   _tick() {
     // 1. Increment the time by one second.
     // 2. Call printTime.
-    this.seconds += 1;
-    if (this.seconds === 60){
-      this.seconds = 0;
-      this.minutes += 1;
-      if (this.minutes === 60) {
-        this.minutes = 0;
-        this.hours += 1
-        if (this.hours === 24) {
-          this.hours = 1;
+  setTimeout(() => {
+      this.seconds += 1;
+      if (this.seconds === 60){
+        this.seconds = 0;
+        this.minutes += 1;
+        if (this.minutes === 60) {
+          this.minutes = 0;
+          this.hours += 1
+          if (this.hours === 24) {
+            this.hours = 1;
+          };
         };
       };
-    };
+    
+      this.printTime();
+      this._tick();
+    } , 1000);}
+}
 
-    this.printTime();
-  };
+
+const readline = require("readline");
+const rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout
+});
+
+
+function addNumbers(sum, numsLeft, completionCallback) {
+  if (numsLeft === 0) {
+    completionCallback(sum);
+  }
+  if (numsLeft > 0) {
+    const response = rl.question('Type a number', num => {
+      sum += parseInt('num');
+      console.log(sum);
+      addNumbers(sum, numsLeft - 1, completionCallback);
+    })
+  }
+
+
+
+
+  // let partialSum = 0;
+  // for (let i = 0; i < nums.length; i++) {
+  //   console.log(partialSum);
+  //   partialSum += nums[i]
+  // }
+  // return partialSum;
 }
