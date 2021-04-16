@@ -186,29 +186,92 @@
 
 /////////////// my Throttle
 
-Function.prototype.myThrottle = function(interval) {
-  let tooSoon = false;
+// Function.prototype.myThrottle = function(interval) {
+//   let tooSoon = false;
+//   return (...args) => {
+
+//     if (!tooSoon) {
+
+//       tooSoon = true;
+
+//       setTimeout( () => {
+//         tooSoon = false;
+//       }, interval );
+
+//       this(...args);
+//     }
+//   }
+// }
+
+// class Neuron {
+//   constructor() {
+//     this.fire = this.fire.myThrottle(500);
+//   }
+
+//   fire(str) {
+//     console.log(`Firing! ${str}`);
+//   }
+// }
+
+Function.prototype.myDebounce = function(interval) {
+  let timerFinished = false;
+
+
   return (...args) => {
+    setTimeout(() => {
+      if (timerFinished) {
+        timerFinished = false;
+      } else {
+        timerFinished = true;
+      }
+      
+    }, interval)
 
-    if (!tooSoon) {
 
-      tooSoon = true;
-
-      setTimeout( () => {
-        tooSoon = false;
-      }, interval );
-
+    if (timerFinished) {
       this(...args);
     }
   }
+
+
 }
 
-class Neuron {
+
+class SearchBar {
   constructor() {
-    this.fire = this.fire.myThrottle(500);
+    this.query = "";
+
+    this.type = this.type.bind(this);
+    this.search = this.search.bind(this);
   }
 
-  fire(str) {
-    console.log(`Firing! ${str}`);
+  type(letter) {
+    this.query += letter;
+    this.search();
+  }
+
+  search() {
+    console.log(`searching for ${this.query}`);
   }
 }
+
+
+const searchBar = new SearchBar();
+
+const queryForHelloWorld = () => {
+  searchBar.type("h");
+  searchBar.type("e");
+  searchBar.type("l");
+  searchBar.type("l");
+  searchBar.type("o");
+  searchBar.type(" ");
+  searchBar.type("w");
+  searchBar.type("o");
+  searchBar.type("r");
+  searchBar.type("l");
+  searchBar.type("d");
+};
+
+queryForHelloWorld();
+
+searchBar.search = searchBar.search.myDebounce(500);
